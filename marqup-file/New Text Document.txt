@@ -1,0 +1,53 @@
+let timeLeft;
+let timerInterval;
+let isRannig;
+
+const timerDisplay = document.getElementById('timer');
+const StartBtn = document.getElementById('StartBtn');
+const StopBtn = document.getElementById('StopBtn');
+
+
+const startTimer = (duration) => {
+    let timer = duration; 
+
+    timerInterval =  setInterval(() => {
+    const minutes = parseInt(timer / 60, 10);
+    const secondes = parseInt(timer % 60, 10);
+
+    const displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const displaySeconds = secondes < 10 ? '0' + secondes : secondes;
+
+    timerDisplay.innerText = displayMinutes + ':' + displaySeconds;
+
+    if(--timer < 0){
+       clearInterval(timerInterval);
+       timerDisplay.innerText = 'Breath Out';
+
+       setTimeout(() => {
+
+        timerDisplay.innerText = 'Breath In';
+        startTimer(timeLeft);
+       },3000);
+    }
+
+}, 1000);
+
+}
+
+const stoptimer = () => {
+    clearInterval(timerInterval);
+    timerDisplay.innerText = 'Breath In';
+}
+
+StartBtn.addEventListener('click', () => {
+    if(!isRannig){
+        timeLeft = 90;
+        startTimer(timeLeft);
+        isRannig = true;
+    }
+});
+
+
+StopBtn.addEventListener('click', () => {
+    stoptimer();
+});
